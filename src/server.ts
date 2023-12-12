@@ -1,8 +1,9 @@
 import express, { Request, Response } from 'express';
 import path from 'path';
 import fs from 'fs';
-import cors from 'cors'; // Import the cors middleware
-import mysql, { RowDataPacket, FieldPacket } from 'mysql2/promise';
+import cors from 'cors';
+import mysql, { RowDataPacket } from 'mysql2/promise';
+import dotenv from 'dotenv';
 
 interface User extends RowDataPacket {
     id: number;
@@ -14,17 +15,19 @@ const PORT = 3001;
 
 const __dirname = process.cwd();
 
+dotenv.config();
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Enable CORS for all routes
 app.use(cors());
 
 const pool = mysql.createPool({
-    host: 'your-azure-mysql-server.mysql.database.azure.com',
-    port: 3306, // The default MySQL port
-    user: 'your-username@your-azure-mysql-server',
-    password: 'your-password',
-    database: 'your-database'
+    host: process.env.DB_HOST,
+    port: parseInt(process.env.DB_PORT || '3306', 10),
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
 });
 
 app.get('/api/anecdotes', (_req: Request, res: Response) => {
