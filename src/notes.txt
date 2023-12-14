@@ -1,0 +1,7 @@
+Material UI:
+npm install @mui/material @emotion/react @emotion/styled
+npm install @mui/icons-material
+
+npm install react-hook-form
+
+npm install ag-grid-community ag-grid-react
